@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Name Collector</title>
+</head>
+<body>
+  <h2>Enter Your Name</h2>
+  <form id="myForm">
+    <input type="text" id="name" required>
+    <button type="submit">Submit</button>
+  </form>
+
+  <script>
+    document.getElementById("myForm").addEventListener("submit", function(e){
+      e.preventDefault();
+
+      fetch("https://script.google.com/macros/s/AKfycbx7j-GPDuHCKlwx1SIaSX9Eg8OFOKxGkLjiUHYerU-FopsGqshV8zlLKplVT2FKgjg0xw/exec", {
+        method: "POST",
+        body: JSON.stringify({
+          name: document.getElementById("name").value
+        })
+      });
+
+      alert("Submitted!");
+    });
+  </script>
+</body>
+</html>
