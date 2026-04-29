@@ -1,0 +1,65 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Name Collector</title>
+  </head>
+  <body>
+    <h2>Enter Your Name</h2>
+    <form id="myForm">
+      <input
+        type="text"
+        id="name"
+        placeholder="Enter your name"
+        required
+      /><br />
+      <input type="email" id="email" placeholder="Enter your email" required />
+      <br />
+      <input type="tel" id="phone" placeholder="Enter your phone" required />
+      <br />
+      <button type="submit">Submit</button>
+    </form>
+    <div id="msg" style="display:none; margin-top:10px;"></div>
+
+    <script>
+      const form = document.getElementById("myForm");
+      const msg = document.getElementById("msg");
+      const button = form.querySelector("button");
+      form.addEventListener("submit", function (e) {
+        e.preventDefault();
+        button.disabled = true;
+        button.innerText = "Submitting...";
+        fetch(
+          "https://script.google.com/macros/s/AKfycbzFhUxk7mEHPvm2vNN_hF9lMKQBB-7L7K91_JnwRniXDGAnhytFPoxp_jCFxyfKNndTwg/exec",
+          {
+            method: "POST",
+            body: JSON.stringify({
+              name: document.getElementById("name").value,
+              email: document.getElementById("email").value,
+              phone: document.getElementById("phone").value,
+            }),
+          },
+        )
+          .then((res) => res.text())
+          .then((data) => {
+            if (data === "Duplicate") {
+              msg.style.display = "block";
+              msg.style.color = "red";
+              msg.innerText = "Email already exists!";
+            } else {
+              msg.style.display = "block";
+              msg.style.color = "green";
+              msg.innerText = "Form submitted successfully!";
+              form.reset();
+            }
+          })
+          .catch((err) => {
+            alert("An error occurred: " + err);
+          })
+          .finally(() => {
+            button.disabled = false;
+            button.innerText = "Submit";
+          });
+      });
+    </script>
+  </body>
+</html>
